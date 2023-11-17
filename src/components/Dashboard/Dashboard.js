@@ -1,32 +1,27 @@
 import React, {useState, useReducer, useEffect} from 'react';
-import DialogList from '../DialogList/DialogList';
 import Chat from '../Chat/Chat';
+import DialogList from '../DialogList/DialogList';
 import MessageArea from '../MessageArea/MessageArea';
 import styles from './Dashboard.module.css';
 import { UserContext } from '../../contexts/userContext';
 import { getData } from '../../api';
-import CONSTANTS from '../../contants';
+import { reducer } from '../../reducers';
+import CONSTANTS from '../../constants';
 const {ACTIONS} = CONSTANTS;
-
-function reducer(state, action) {
-
-}
-
 
 const Dashboard = () => {
     const [user, setUser] = useState({
-        id: 1,
-        usenamw: 'c1234s',
-        imageScr: 'https://robohash.org/c1234s'
+        username: 'c123s',
     })
 
     const [state, dispatch] = useReducer(reducer, {
-        messages: []
+        messages: [],
+        error: null
     })
 
     useEffect(() => {
         getData()
-        .then((data) =>{
+        .then((data) => {
             dispatch({
                 type: ACTIONS.DATA_LOAD_SUCCESS,
                 payload: {
@@ -36,22 +31,38 @@ const Dashboard = () => {
         })
         .catch((error) => {
             dispatch({
-                type: ACTIONS.DATA_LOAD_ERROR
+                type: ACTIONS.DATA_LOAD_ERROR,
+                payload: {
+                    error
+                }
             })
         })
     }, [])
 
+    const createMessage = (text) => {
+        const {messages} = state;
+        const newMessage = {
+            body: text,
+            id: messages.length + 1,
+            user
+        }
+        dispatch({
+            type: ACTIONS.ADD_NEW_MESSAGE,
+            payload: {
+                newMessage
+            }
+        })
+    }
 
     return (
-        <UserContext.Provider>
+        <UserContext.Provider value={user}>
             <main className={styles.container}>
-                    <DialogList/>
-                <section className={styles.wrapper}>
-                    <Chat/>
-                    <MessageArea/>  
-                </section>
-           
-            </main>
+            <DialogList /> {/* row */}
+            <section className={styles.wrapper}>
+                <Chat dialog={state.messages} /> {/* column */}
+                <MessageArea addMessage={createMessage} /> {/* column */}
+            </section>
+        </main>
         </UserContext.Provider>
     );
 }

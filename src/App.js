@@ -1,8 +1,8 @@
-import MessangerPage from './pages/MessangerPage';
+import MessengerPage from './pages/MessengerPage';
 
 function App() {
   return (
-    <MessangerPage/>
+    <MessengerPage/>
   );
 }
 

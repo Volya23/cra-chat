@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './DialogList.module.css'
+import styles from './DialogList.module.css';
 
 const DialogList = () => {
     return (

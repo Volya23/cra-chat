@@ -1,10 +1,10 @@
 import React from 'react';
 import Dashboard from '../components/Dashboard/Dashboard';
 
-const MessangerPage = () => {
+const MessengerPage = () => {
     return (
-        <Dashboard/>
+        <Dashboard />
     );
 }
 
-export default MessangerPage;
+export default MessengerPage;
